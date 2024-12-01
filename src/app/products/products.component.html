@@ -1,0 +1,27 @@
+<mat-grid-list cols="6" gutterSize="5" rowHeight="4:3">
+    <mat-grid-tile *ngFor="let product of products$ | async">
+        <mat-card class="product-list-item-card">
+          <mat-card-header>
+              <mat-card-title>{{ product.name }}</mat-card-title>
+          </mat-card-header>
+          <img class="product-list-item-image" mat-card-image width="100" height="150" src="{{product.img}}" alt="{{ product.name }}" (error)="product.img = defaultImage">
+          <mat-card-content>
+              <p>Price: {{ product.price | currency }}</p>
+          </mat-card-content>
+          <mat-card-actions>
+              <button mat-button color="primary" (click)="addToCart(product)">Add to cart</button>
+          </mat-card-actions>
+      </mat-card>
+    </mat-grid-tile>
+
+  
+    <ng-container *ngIf="products$ | async as product; else noProducts"></ng-container>
+    <ng-template #noProducts>
+      <mat-grid-list cols="6" gutterSize="5" rowHeight="1:1">
+        <mat-grid-tile *ngFor="let placeholderProduct of placeholderProducts ">
+          <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
+        </mat-grid-tile>
+      </mat-grid-list>
+      <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
+    </ng-template>
+</mat-grid-list>
