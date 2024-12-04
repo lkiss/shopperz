@@ -42,7 +42,7 @@ export class ProductsComponent {
   constructor(private productService: ProductService, private cartService: CartService) { }
 
   ngOnInit() {
-    this.products$ = this.productService.getProducts();
+    this.products$ = this.productService.getProducts$();
   }
 
   addToCart(product: Product) {

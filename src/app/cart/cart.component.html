@@ -11,11 +11,11 @@
     <mat-list class="cart-list">
         <mat-list-item class="cart-list-item" *ngFor="let productOrder of productOrders;">
             <img class="cart-list-item-image" matListItemAvatar [src]="getProduct(productOrder.productId)?.img"
-                alt="{{ getProduct(productOrder.productId)?.name }}" (error)="getProduct(productOrder.productId)!.img = defaultImage">
+                alt="{{ getProduct(productOrder.productId)?.name }}" (error)="getDefaultImage()">
             <h3 matListItemTitle>{{ getProduct(productOrder.productId)?.name }}</h3>
-            <p matListItemLine>
+            <p class="cart-list-item-content" matListItemLine>
                 <span>Quantity: {{productOrder.productTrack.quantity}}</span>
-                <span>Total Price: {{calculateTotalPrice() | currency}}</span>
+                <span>Total Price: {{calculateOrderPrice(productOrder) | currency}}</span>
             </p>
         
             <div class="cart-list-item-controls">
@@ -26,4 +26,8 @@
 
         </mat-list-item>
     </mat-list>
+</div>
+<div class="checkout-footer">
+    <h2>Total Price: {{getTotalPrice() | currency}}</h2>
+    <button mat-raised-button color="primary" [disabled]="!productOrders.length">Checkout</button>
 </div>

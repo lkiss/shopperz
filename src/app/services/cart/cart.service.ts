@@ -1,5 +1,9 @@
-import { Injectable } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
 import { Product } from '../product/product.service';
+
+import { InjectionToken } from '@angular/core';
+
+export const INITIAL_CART = new InjectionToken<Record<string, ProductTrack>>('InitialCart');
 
 @Injectable({
   providedIn: 'root'
@@ -8,7 +12,9 @@ export class CartService {
 
   private cart: Record<string, ProductTrack> = {};
 
-  constructor() { }
+  constructor( @Inject(INITIAL_CART) cart: Record<string, ProductTrack> = {}) { 
+    this.cart = cart;
+  }
 
   getProductInCart(id: string): ProductTrack {
     return this.cart[id];
@@ -22,7 +28,6 @@ export class CartService {
 
     const modificationResult = this.cart[productId].quantity + orderAmount;
 
-    // if product is in cart and the order amount is lower 0 set it to empty
     if (modificationResult <= 0) {
       this.cart[productId] = { quantity: 0 };
       return this.cart[productId];
@@ -45,7 +50,7 @@ export class CartService {
     return Object.values(this.cart).reduce((acc, productTrack) => acc + productTrack.quantity, 0);
   }
 
-  getAllOrders(): Record<string, ProductTrack> {
+  getCart(): Record<string, ProductTrack> {
     return this.cart;
   }
 }

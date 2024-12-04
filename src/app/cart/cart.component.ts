@@ -6,13 +6,11 @@ import { CartService, ProductTrack } from '../services/cart/cart.service';
 import { RouterLink } from '@angular/router';
 import { Product, ProductService } from '../services/product/product.service';
 import { MatListModule } from '@angular/material/list';
-import { Observable, of } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatInputModule } from '@angular/material/input';
 import { FormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatGridListModule } from '@angular/material/grid-list';
 import { MatToolbarModule } from '@angular/material/toolbar';
 
 @Component({
@@ -41,11 +39,11 @@ export class CartComponent {
 
   ngOnInit() {
     this.getProductOrder();
-    this.productService.getProducts().subscribe(products => this.products = products);
+    this.products = this.productService.getProducts();
   }
 
   getProductOrder() {
-    this.productOrders = Object.entries(this.cartService.getAllOrders())
+    this.productOrders = Object.entries(this.cartService.getCart())
       .map(([productId, productTrack]) => ({ productId, productTrack }))
       .filter(({ productTrack }) => productTrack.quantity > 0);
   }
@@ -64,15 +62,32 @@ export class CartComponent {
     return this.cartService.isMoreProductAvailable(productTrack.quantity, product);
   }
 
-  calculateTotalPrice(): number {
-    return this.productOrders.reduce((acc, { productId, productTrack }) => {
-      const product = this.getProduct(productId);
-      return acc + productTrack.quantity * (product?.price || 1);
-    }, 0);
+  calculateOrderPrice(productTrack: { productId: string, productTrack: ProductTrack }): number {
+    const productPrice = this.getProduct(productTrack.productId)?.price || 1;
+    return productPrice * productTrack.productTrack.quantity;
+  }
+
+  getTotalPrice(): number {
+    const cart = this.cartService.getCart();
+    const productIds = Object.keys(cart);
+
+    return productIds
+      .map(productId => {
+        const product = this.getProduct(productId);
+        if (product) {
+          return product.price * cart[productId].quantity;
+        }
+        return 0;
+      })
+      .reduce((acc, price) => acc + price, 0);
   }
 
   removeProduct(productId: string) {
     this.cartService.modifyCart(productId, -this.cartService.getProductInCart(productId).quantity);
     this.getProductOrder();
+  }
+
+  getDefaultImage() {
+    return this.defaultImage;
   }
 }
