@@ -1,1 +1,29 @@
-<p>cart works!</p>
+<mat-toolbar color="primary">
+    <button mat-icon-button routerLink="/products">
+        <mat-icon aria-hidden="false" aria-label="Back button" fontIcon="arrow_back"></mat-icon>
+    </button>
+    <span>Cart</span>
+</mat-toolbar>
+
+
+
+<div class="cart-list-wrapper">
+    <mat-list class="cart-list">
+        <mat-list-item class="cart-list-item" *ngFor="let productOrder of productOrders;">
+            <img class="cart-list-item-image" matListItemAvatar [src]="getProduct(productOrder.productId)?.img"
+                alt="{{ getProduct(productOrder.productId)?.name }}" (error)="getProduct(productOrder.productId)!.img = defaultImage">
+            <h3 matListItemTitle>{{ getProduct(productOrder.productId)?.name }}</h3>
+            <p matListItemLine>
+                <span>Quantity: {{productOrder.productTrack.quantity}}</span>
+                <span>Total Price: {{calculateTotalPrice() | currency}}</span>
+            </p>
+        
+            <div class="cart-list-item-controls">
+                <button mat-icon-button (click)="removeProduct(productOrder.productId)">
+                    <mat-icon>delete</mat-icon>
+                </button>
+            </div>
+
+        </mat-list-item>
+    </mat-list>
+</div>

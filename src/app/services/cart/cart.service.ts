@@ -14,38 +14,42 @@ export class CartService {
     return this.cart[id];
   }
 
-  modifyCart(product: Product, quantity: number): ProductTrack {
-    if (!this.cart[product.id]) {
-      this.cart[product.id] = { quantity: quantity, isValid: true };
-      return this.cart[product.id];
+  modifyCart(productId: string, orderAmount: number): ProductTrack {
+    if (!this.cart[productId]) {
+      this.cart[productId] = { quantity: orderAmount };
+      return this.cart[productId];
     }
 
-    if ((quantity > product.availableAmount && quantity > 0) || (quantity < product.minOrderAmount && quantity > 0)) {
-      return this.cart[product.id];
-    }
+    const modificationResult = this.cart[productId].quantity + orderAmount;
 
-    const modificationResult = this.cart[product.id].quantity + quantity;
-
+    // if product is in cart and the order amount is lower 0 set it to empty
     if (modificationResult <= 0) {
-      const deletedProduct = this.cart[product.id];
-      delete this.cart[product.id];
-      return { ...deletedProduct, quantity: 0 };
+      this.cart[productId] = { quantity: 0 };
+      return this.cart[productId];
     }
 
-    if (modificationResult > 0 && modificationResult < product.minOrderAmount) {
-      return this.cart[product.id];
-    }
+    this.cart[productId] = {quantity: modificationResult};
+    return this.cart[productId];
+  }
 
-    if (modificationResult >= product.availableAmount) {
-      return this.cart[product.id];
-    }
+  isOrderAmountEnough(orderAmount: number, product?: Product): boolean {
 
-    this.cart[product.id] = { ...this.cart[product.id], quantity: modificationResult };
-    return this.cart[product.id];
+    return product ? orderAmount >= product.minOrderAmount : false;
+  }
+
+  isMoreProductAvailable(orderAmount: number, product?: Product): boolean {
+    return product ? orderAmount <= product.availableAmount - (this.cart[product.id]?.quantity || 0)  : true;
+  }
+
+  getAllOrderAmounts(): number {
+    return Object.values(this.cart).reduce((acc, productTrack) => acc + productTrack.quantity, 0);
+  }
+
+  getAllOrders(): Record<string, ProductTrack> {
+    return this.cart;
   }
 }
 
 export type ProductTrack = {
   quantity: number;
-  isValid: boolean;
 }

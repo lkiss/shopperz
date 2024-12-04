@@ -1,8 +1,8 @@
 .product-list {
     &-item {
         &-image {
-            width: 150px;
-            height: 150px;
+            max-width: 150px;
+            max-height: 100px;
             object-fit: cover;
         }
 
@@ -10,10 +10,30 @@
             width: 100%;
             height: 100%;
             align-items: center;
+
+            &-header {
+                height: 70px;
+                display: flex;
+                align-items: center;
+                text-align: center;
+            }
+
+            &-content {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+        &-actions-container {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+            flex-direction: column;
+
+            &-add-to-cart-button {
+                width: 100%;
+                padding: 5px; 
+            }
         }
     }
-}
-
-.loading-container {
-    
 }

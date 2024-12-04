@@ -22,14 +22,14 @@ describe('CartService', () => {
       describe('when product id exist in cart', () => {
         it('should return product track information', () => {
           service.modifyCart(product01, 2);
-          expect(service.getProductInCart('1')).toEqual({ quantity: 4, isValid: true });
+          expect(service.getProductInCart('1')).toEqual({ quantity: 4 });
         });
       })
       describe('when product id does not exist in cart', () => {
         it('should return product track information', () => {
           const newProduct = { id: '3', name: 'Product 3', img: 'image3.jpg', availableAmount: 10, minOrderAmount: 2, price: 10 };
           service.modifyCart(newProduct, 1);
-          expect(service.getProductInCart('3')).toEqual({ quantity: 1, isValid: true });
+          expect(service.getProductInCart('3')).toEqual({ quantity: 1 });
         });
       })
     })
@@ -41,12 +41,12 @@ describe('CartService', () => {
         describe('and lower than available', () => {
           it('should return with updated product track information', () => {
             service.modifyCart(product01, 2);
-            expect(service.getProductInCart('1')).toEqual({ quantity: 4, isValid: true });
+            expect(service.getProductInCart('1')).toEqual({ quantity: 4 });
           })
           describe('and higher than available', () => {
             it('should return with original product track information', () => {
               service.modifyCart(product01, 20);
-              expect(service.getProductInCart('1')).toEqual({ quantity: 2, isValid: true });
+              expect(service.getProductInCart('1')).toEqual({ quantity: 2});
             })
           })
         })
@@ -55,13 +55,13 @@ describe('CartService', () => {
         describe('and lower than available', () => {
           it('should return with original product track information', () => {
             service.modifyCart(product01, 1);
-            expect(service.getProductInCart('1')).toEqual({ quantity: 2, isValid: true });
+            expect(service.getProductInCart('1')).toEqual({ quantity: 2 });
           })
         })
         describe('and higher than available', () => {
           it('should return with original product track information', () => {
             service.modifyCart(product01, 20);
-            expect(service.getProductInCart('1')).toEqual({ quantity: 2, isValid: true });
+            expect(service.getProductInCart('1')).toEqual({ quantity: 2 });
           })
         })
       })
@@ -72,7 +72,7 @@ describe('CartService', () => {
         describe('and lower than available', () => {
           it('should return with updated product track information', () => {
             service.modifyCart(product02, -1);
-            expect(service.getProductInCart('2')).toEqual({ quantity: 5, isValid: true });
+            expect(service.getProductInCart('2')).toEqual({ quantity: 5 });
           })
         })
       })
@@ -80,7 +80,7 @@ describe('CartService', () => {
         describe('and lower than available', () => { 
           it('should return with original product track information', () => {
             service.modifyCart(product02, -3);
-            expect(service.getProductInCart('2')).toEqual({ quantity: 6, isValid: true });
+            expect(service.getProductInCart('2')).toEqual({ quantity: 6 });
           })
          })
       })

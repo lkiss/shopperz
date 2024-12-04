@@ -1,27 +1,51 @@
-<mat-grid-list cols="6" gutterSize="5" rowHeight="4:3">
-    <mat-grid-tile *ngFor="let product of products$ | async">
-        <mat-card class="product-list-item-card">
-          <mat-card-header>
-              <mat-card-title>{{ product.name }}</mat-card-title>
-          </mat-card-header>
-          <img class="product-list-item-image" mat-card-image width="100" height="150" src="{{product.img}}" alt="{{ product.name }}" (error)="product.img = defaultImage">
-          <mat-card-content>
-              <p>Price: {{ product.price | currency }}</p>
-          </mat-card-content>
-          <mat-card-actions>
-              <button mat-button color="primary" (click)="addToCart(product)">Add to cart</button>
-          </mat-card-actions>
-      </mat-card>
-    </mat-grid-tile>
+<mat-toolbar color="primary">
+  <span>Products</span>
+</mat-toolbar>
 
-  
-    <ng-container *ngIf="products$ | async as product; else noProducts"></ng-container>
-    <ng-template #noProducts>
-      <mat-grid-list cols="6" gutterSize="5" rowHeight="1:1">
-        <mat-grid-tile *ngFor="let placeholderProduct of placeholderProducts ">
-          <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
-        </mat-grid-tile>
-      </mat-grid-list>
-      <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
-    </ng-template>
+<mat-grid-list cols="6" gutterSize="5" rowHeight="55%">
+  <mat-grid-tile *ngFor="let product of products$ | async">
+    <mat-card class="product-list-item-card">
+
+      <mat-card-header class="product-list-item-card-header">
+        <mat-card-title>{{ product.name }}</mat-card-title>
+      </mat-card-header>
+
+      <mat-card-content class="product-list-item-card-content">
+        <img class="product-list-item-image" mat-card-image src="{{product.img}}" alt="{{ product.name }}"
+          (error)="product.img = defaultImage">
+        <p>Price: {{ product.price | currency }}</p>
+
+
+        <mat-chip disabled>Minimum order amount is {{product.minOrderAmount}}</mat-chip>
+        <mat-chip disabled>{{getAvailableProductAmount(product)}} is available</mat-chip>
+
+      </mat-card-content>
+
+      <mat-card-actions class="product-list-item-actions-container">
+        <form class="product-list-item-actions-container-amount-form">
+          <mat-form-field class="product-list-item-actions-container-amount-form-input">
+            <input matInput type="number" placeholder="{{product.minOrderAmount}}" [(ngModel)]="product.orderAmount"
+              name="orderAmount">
+          </mat-form-field>
+        </form>
+
+        <button
+          [attr.disabled]="canAddToCart(product) ? null : true"
+          class="product-list-item-actions-container-add-to-cart-button" mat-mini-fab color="primary"
+          (click)="addToCart(product)"><mat-icon>add_shopping_cart</mat-icon></button>
+      </mat-card-actions>
+
+    </mat-card>
+  </mat-grid-tile>
+
+
+  <ng-container *ngIf="products$ | async as product; else noProducts"></ng-container>
+  <ng-template #noProducts>
+    <mat-grid-list cols="6" gutterSize="5" rowHeight="1:1">
+      <mat-grid-tile *ngFor="let placeholderProduct of placeholderProducts ">
+        <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
+      </mat-grid-tile>
+    </mat-grid-list>
+    <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
+  </ng-template>
 </mat-grid-list>

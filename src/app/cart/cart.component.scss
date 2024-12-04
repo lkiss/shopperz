@@ -1,0 +1,31 @@
+.cart-list {
+    padding: 0;
+    list-style: none;
+    height: 100%;
+
+    &-wrapper {
+        display: flex;
+        justify-content: center;
+        align-items: start;
+        padding: 10px;
+        border-bottom: 1px solid #ccc;
+        height: 100%;
+    }
+
+    &-item {
+      height: 150px;
+      display: flex;
+
+  
+      &-image {
+        width: 100px;
+        height: 100px;
+      }
+  
+      &-controls {
+        
+
+      }
+
+    }
+  }
