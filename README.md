@@ -1,6 +1,18 @@
-# ShoppingCart
+# Shopperz
 
 This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.0.2.
+
+## Description
+
+Shopperz is a simple and intuitive shopping cart application built with Angular. It allows users to browse products, add items to their cart, and manage their purchases efficiently. The app is designed to provide a seamless shopping experience with a clean and responsive user interface.
+
+## Structure
+
+The application contains 2 routes defined in `app.routes.ts`
+`/products` for listing all the products and their details
+`/cart` for list all the items that were put into the cart and show the total and individual prices
+
+The API call that is fecthing the products is hardcoded into `product.service.ts` file.
 
 ## Development server
 
