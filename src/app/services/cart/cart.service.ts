@@ -1,9 +1,6 @@
-import { Inject, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Product } from '../product/product.service';
 
-import { InjectionToken } from '@angular/core';
-
-export const INITIAL_CART = new InjectionToken<Record<string, ProductTrack>>('InitialCart');
 
 @Injectable({
   providedIn: 'root'
@@ -12,8 +9,8 @@ export class CartService {
 
   private cart: Record<string, ProductTrack> = {};
 
-  constructor( @Inject(INITIAL_CART) cart: Record<string, ProductTrack> = {}) { 
-    this.cart = cart;
+  resetCart(): void {
+    this.cart = {};
   }
 
   getProductInCart(id: string): ProductTrack {

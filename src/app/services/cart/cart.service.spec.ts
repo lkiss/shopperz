@@ -1,21 +1,14 @@
 import { TestBed } from '@angular/core/testing';
-import { CartService, INITIAL_CART } from './cart.service';
+import { CartService } from './cart.service';
 import { Product } from '../product/product.service';
-import { appConfig } from '../../app.config';
-import { ApplicationConfig } from '@angular/core';
-
 
 describe('CartService', () => {
   let service: CartService;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({
-      providers: [
-        CartService,
-        { provide: INITIAL_CART, useValue: {} }
-      ]
-    });
+    TestBed.configureTestingModule({});
     service = TestBed.inject(CartService);
+    service.resetCart();
   });
 
   it('should be created', () => {
